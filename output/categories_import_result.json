@@ -1,0 +1,498 @@
+[
+  {
+    "slug": "rotake",
+    "title": "ابزار بادی روتاک",
+    "sourceId": 362,
+    "id": "6adc869d200c041d7dd2fc88",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-tools",
+    "title": "ابزارآلات بادی",
+    "sourceId": 111,
+    "id": "6ab8e07f93b271b810c88259",
+    "status": "unchanged",
+    "error": "differs (title, sortOrder); use --update"
+  },
+  {
+    "slug": "electric-and-cordless-tools",
+    "title": "ابزارآلات برقی و شارژی",
+    "sourceId": 425,
+    "id": "6ab8e0ab93b271b810c8825e",
+    "status": "unchanged",
+    "error": "differs (title, sortOrder); use --update"
+  },
+  {
+    "slug": "balancer",
+    "title": "بالانسر صنعتی",
+    "sourceId": 168,
+    "id": "6adc869e200c041d7dd2fc8a",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "other-tools-and-accessories",
+    "title": "سایر ابزار و متعلقات",
+    "sourceId": 438,
+    "id": "6adc869f200c041d7dd2fc8c",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "coupling",
+    "title": "کوپلینگ و دنباله کوپلینگ",
+    "sourceId": 158,
+    "id": "6adc86a1200c041d7dd2fc8e",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "rocol-products",
+    "title": "محصولات rocol",
+    "sourceId": 245,
+    "id": "6adc86a1200c041d7dd2fc90",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "rocol-air-tools",
+    "title": "ابزار بادی روکول",
+    "sourceId": 246,
+    "id": "6adc86a2200c041d7dd2fc92",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "rocol-cordless-tools",
+    "title": "ابزار شارژی روکول",
+    "sourceId": 247,
+    "id": "6adc86a3200c041d7dd2fc94",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-saw",
+    "title": "اره عمودبر بادی",
+    "sourceId": 113,
+    "id": "6adc86a4200c041d7dd2fc96",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-spot-drill",
+    "title": "اسپات دریل بادی",
+    "sourceId": 141,
+    "id": "6adc86a5200c041d7dd2fc98",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-brush",
+    "title": "ایربراش بادی",
+    "sourceId": 112,
+    "id": "6adc86a6200c041d7dd2fc9a",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-impact-wrench",
+    "title": "بکس بادی",
+    "sourceId": 114,
+    "id": "6ab8e30093b271b810c8827e",
+    "status": "unchanged",
+    "error": "differs (sortOrder); use --update"
+  },
+  {
+    "slug": "air-punch",
+    "title": "پانچ بادی",
+    "sourceId": 119,
+    "id": "6adc86a7200c041d7dd2fc9c",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-riveter",
+    "title": "پرچ کن بادی",
+    "sourceId": 118,
+    "id": "6adc86a8200c041d7dd2fc9e",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-polish",
+    "title": "پولیش بادی",
+    "sourceId": 121,
+    "id": "6adc86a8200c041d7dd2fca0",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "automatic-screwdriver",
+    "title": "پیچ بند اتومات",
+    "sourceId": 433,
+    "id": "6adc86a9200c041d7dd2fca2",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-screwdriver",
+    "title": "پیچ گوشتی بادی",
+    "sourceId": 115,
+    "id": "6adc86aa200c041d7dd2fca4",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "electric-screwdriver",
+    "title": "پیچ گوشتی برقی",
+    "sourceId": 147,
+    "id": "6adc86ab200c041d7dd2fca6",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "kilews-screwdriver",
+    "title": "پیچ گوشتی برقی کیلواس",
+    "sourceId": 148,
+    "id": "6adc86ac200c041d7dd2fca8",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "manual-screwdriver",
+    "title": "پیچ گوشتی دستی",
+    "sourceId": 366,
+    "id": "6adc86ad200c041d7dd2fcaa",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "rechargeable-screwdriver",
+    "title": "پیچ گوشتی شارژی",
+    "sourceId": 365,
+    "id": "6adc86ad200c041d7dd2fcac",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-spray-gun",
+    "title": "پیستوله بادی",
+    "sourceId": 122,
+    "id": "6ab8e0df93b271b810c88263",
+    "status": "unchanged",
+    "error": "differs (sortOrder); use --update"
+  },
+  {
+    "slug": "connections",
+    "title": "تبدیل و اتصالات",
+    "sourceId": 242,
+    "id": "6adc86af200c041d7dd2fcae",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "digital-torque-tester",
+    "title": "ترک تستر دیجیتال",
+    "sourceId": 432,
+    "id": "6adc86b0200c041d7dd2fcb0",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "pneumatic-strapping-tool",
+    "title": "تسمه کش بادی",
+    "sourceId": 430,
+    "id": "6adc86b1200c041d7dd2fcb2",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "pneumatic-ratchet-wrench",
+    "title": "جغجغه بادی",
+    "sourceId": 123,
+    "id": "6adc86b1200c041d7dd2fcb4",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-caulking-gun",
+    "title": "چسب زن آکواریوم",
+    "sourceId": 127,
+    "id": "6adc86b2200c041d7dd2fcb6",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-hammer",
+    "title": "چکش بادی",
+    "sourceId": 124,
+    "id": "6adc86b3200c041d7dd2fcb8",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "needle-scalers",
+    "title": "چکش گل زن بادی",
+    "sourceId": 125,
+    "id": "6adc86b4200c041d7dd2fcba",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-drill",
+    "title": "دریل بادی",
+    "sourceId": 126,
+    "id": "6adc86b5200c041d7dd2fcbc",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-oiler",
+    "title": "روغن زن",
+    "sourceId": 128,
+    "id": "6adc86b6200c041d7dd2fcbe",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "puma-inflatable-wire-folding-series",
+    "title": "سری سیم چین بادی",
+    "sourceId": 361,
+    "id": "6adc86b7200c041d7dd2fcc0",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-sander",
+    "title": "سنباده بادی",
+    "sourceId": 364,
+    "id": "6adc86b8200c041d7dd2fcc2",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-burr",
+    "title": "سنگ فرز بادی",
+    "sourceId": 134,
+    "id": "6adc86b9200c041d7dd2fcc4",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-file",
+    "title": "سوهان بادی",
+    "sourceId": 132,
+    "id": "6adc86b9200c041d7dd2fcc6",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-c-ring",
+    "title": "سی رینگ بادی",
+    "sourceId": 131,
+    "id": "6adc86ba200c041d7dd2fcc8",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-nipper",
+    "title": "سیم چین بادی",
+    "sourceId": 133,
+    "id": "6adc86bb200c041d7dd2fcca",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "glass-fitting-air-tool",
+    "title": "شیشه جازن بادی",
+    "sourceId": 138,
+    "id": "6adc86bc200c041d7dd2fccc",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-die-grinder",
+    "title": "فرز انگشتی بادی",
+    "sourceId": 135,
+    "id": "6adc86be200c041d7dd2fcce",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "engraving-pen",
+    "title": "قلم حکاکی بادی",
+    "sourceId": 136,
+    "id": "6adc86bf200c041d7dd2fcd0",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-metal-shear-nipper",
+    "title": "قیچی ورق بر بادی",
+    "sourceId": 137,
+    "id": "6adc86c0200c041d7dd2fcd2",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-box-closer",
+    "title": "کارتن دوز بادی",
+    "sourceId": 140,
+    "id": "6adc86c0200c041d7dd2fcd4",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-riveter-kit",
+    "title": "کیت پرچ",
+    "sourceId": 120,
+    "id": "6adc86c1200c041d7dd2fcd6",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-grease-gun",
+    "title": "گریس پمپ بادی",
+    "sourceId": 142,
+    "id": "6adc86c2200c041d7dd2fcd8",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "leafing-buddy",
+    "title": "لفینگ بادی",
+    "sourceId": 359,
+    "id": "6adc86c3200c041d7dd2fcda",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "tools-accessories",
+    "title": "لوازم جانبی ابزارآلات",
+    "sourceId": 20,
+    "id": "6adc86c4200c041d7dd2fcdc",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "puma-meter",
+    "title": "متر پوما",
+    "sourceId": 248,
+    "id": "6adc86c5200c041d7dd2fcde",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-stapler",
+    "title": "منگنه کوب بادی",
+    "sourceId": 143,
+    "id": "6adc86c6200c041d7dd2fce0",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-riveting-nut",
+    "title": "مهره پرچ کن بادی",
+    "sourceId": 228,
+    "id": "6adc86c6200c041d7dd2fce2",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-nailer",
+    "title": "میخکوب بادی",
+    "sourceId": 144,
+    "id": "6adc86c7200c041d7dd2fce4",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-micro-grinder",
+    "title": "میکروفرز بادی",
+    "sourceId": 145,
+    "id": "6adc86c8200c041d7dd2fce6",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-blow-gun",
+    "title": "باد پاش",
+    "sourceId": 437,
+    "id": "6adc86c9200c041d7dd2fce8",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "straight-air-screwdriver",
+    "title": "پیچ گوشتی بادی مستقیم",
+    "sourceId": 116,
+    "id": "6adc86ca200c041d7dd2fcea",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "mtt-screwdriver",
+    "title": "پیچ گوشتی برقی mtt",
+    "sourceId": 447,
+    "id": "6adc86cb200c041d7dd2fcec",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-screwdriver-pistol-type",
+    "title": "پیچ گوشتی هفت تیری",
+    "sourceId": 117,
+    "id": "6adc86cc200c041d7dd2fcee",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-belt-sander",
+    "title": "سنباده تانکی بادی",
+    "sourceId": 129,
+    "id": "6adc86cd200c041d7dd2fcf0",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-vibrating-sander",
+    "title": "سنباده لرزان بادی",
+    "sourceId": 230,
+    "id": "6adc86ce200c041d7dd2fcf2",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-belt-sander-air-tools",
+    "title": "سنباده نواری بادی",
+    "sourceId": 130,
+    "id": "6adc86cf200c041d7dd2fcf4",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "air-hose-reel",
+    "title": "شیلنگ جمع کن",
+    "sourceId": 170,
+    "id": "6adc86d0200c041d7dd2fcf6",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "care-unit",
+    "title": "واحد مراقبت",
+    "sourceId": 167,
+    "id": "6adc86d0200c041d7dd2fcf8",
+    "status": "created",
+    "error": null
+  },
+  {
+    "slug": "dehumidifier",
+    "title": "آب گیر تک",
+    "sourceId": 169,
+    "id": "6adc86d1200c041d7dd2fcfa",
+    "status": "created",
+    "error": null
+  }
+]

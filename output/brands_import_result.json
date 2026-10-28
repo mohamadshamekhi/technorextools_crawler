@@ -1,0 +1,110 @@
+[
+  {
+    "slug": "bsd",
+    "title": "BSD",
+    "brand": "unchanged",
+    "brandId": "6ab8e02993b271b810c88252",
+    "logo": "skipped",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/09/b9ccc7e1-ca30-460a-b612-577b56d6a6f1.webp",
+    "error": null
+  },
+  {
+    "slug": "kilews",
+    "title": "Kilews",
+    "brand": "created",
+    "brandId": "6adf646a200c041d7dd2fe02",
+    "logo": "uploaded",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/10/11b29389-d989-408b-a719-c742e6d5645d.webp",
+    "error": null
+  },
+  {
+    "slug": "mtt",
+    "title": "MTT",
+    "brand": "updated",
+    "brandId": "6ab8dda273d3ea0ac604317f",
+    "logo": "skipped",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/09/4f19ef17-5cfd-438e-b82b-b1c997823492.webp",
+    "error": null
+  },
+  {
+    "slug": "olfa",
+    "title": "Olfa",
+    "brand": "created",
+    "brandId": "6adf646a200c041d7dd2fe03",
+    "logo": "uploaded",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/10/aaf1e002-4cc7-4d90-882c-471f03597e23.webp",
+    "error": null
+  },
+  {
+    "slug": "puma",
+    "title": "Puma",
+    "brand": "created",
+    "brandId": "6adf646a200c041d7dd2fe04",
+    "logo": "uploaded",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/10/c1f0c1bf-a1d5-4334-8a20-5a4f6bbae0bf.webp",
+    "error": null
+  },
+  {
+    "slug": "rocol",
+    "title": "Rocol",
+    "brand": "created",
+    "brandId": "6adf646a200c041d7dd2fe05",
+    "logo": "uploaded",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/10/ee805262-8964-4722-9395-0ff7f28d7659.webp",
+    "error": null
+  },
+  {
+    "slug": "rotake",
+    "title": "Rotake",
+    "brand": "created",
+    "brandId": "6adf646a200c041d7dd2fe06",
+    "logo": "uploaded",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/10/52a2e7a6-d345-4977-a5fe-862c628fe363.webp",
+    "error": null
+  },
+  {
+    "slug": "sumake",
+    "title": "Sumake",
+    "brand": "created",
+    "brandId": "6adf646a200c041d7dd2fe07",
+    "logo": "none",
+    "logoUrl": null,
+    "error": null
+  },
+  {
+    "slug": "thb",
+    "title": "THB",
+    "brand": "created",
+    "brandId": "6adf646a200c041d7dd2fe08",
+    "logo": "uploaded",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/10/349b4a50-c8b3-4e7c-9852-aa05281a2909.webp",
+    "error": null
+  },
+  {
+    "slug": "torqnado",
+    "title": "Torqnado",
+    "brand": "created",
+    "brandId": "6adf646a200c041d7dd2fe09",
+    "logo": "uploaded",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/10/7cff3b89-5dd4-48c3-83ac-2a498d617381.webp",
+    "error": null
+  },
+  {
+    "slug": "vessel",
+    "title": "Vessel",
+    "brand": "updated",
+    "brandId": "6ab8e03793b271b810c88256",
+    "logo": "uploaded",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/10/f0266060-8bd1-4300-ab02-9fb7d4d3fae0.webp",
+    "error": null
+  },
+  {
+    "slug": "worx",
+    "title": "Worx",
+    "brand": "created",
+    "brandId": "6adf646a200c041d7dd2fe0a",
+    "logo": "uploaded",
+    "logoUrl": "https://technorex-media.s3.ir-thr-at1.arvanstorage.ir/brands/2026/10/0822dd99-2a66-44eb-ae4f-eac374e78514.webp",
+    "error": null
+  }
+]
