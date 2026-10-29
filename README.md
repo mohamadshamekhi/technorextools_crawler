@@ -30,6 +30,22 @@ ABZAR_TOKEN=... python3 import_category_images.py --src output/menu_categories.j
 - If `menu_categories.py` finds no links (menu built by JS), save the homepage from a browser and run
   `python3 menu_categories.py --html saved.html`. `--save-html` keeps the downloaded page for debugging.
 
+## Category attributes from product specs
+
+```bash
+python3 category_specs.py                                # -> output/category_specs.json
+ABZAR_TOKEN=... python3 import_category_attributes.py --dry-run
+ABZAR_TOKEN=... python3 import_category_attributes.py
+```
+
+- `category_specs.py` opens the first product of every category (falls back to the next ones when it has no
+  spec list) and parses its bullet list into key/value pairs: «میزان برش استیل: 1.6 میلی متر» → number, unit
+  `میلی متر`; «وزن دستگاه 1.08kg» (no colon) → number, unit `kg`; «مدل AT-6112» → text. A `/` between digits
+  is read as the Persian decimal point (`6/3psi` = 6.3) except in inch sizes. Brand is dropped (products have a
+  brand field); non-pair lines are listed under `skipped`.
+- `import_category_attributes.py` gives each of our categories (by slug) an attribute group «ویژگی فنی و ظاهری»
+  and adds the missing attributes. It never edits or deletes, so re-running is safe.
+
 ## Other scripts
 
 - `categories.py` → `output/categories.json`: the full WooCommerce category tree (not just the menu).
