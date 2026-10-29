@@ -4,6 +4,7 @@
   ABZAR_TOKEN=... python3 import_categories.py --dry-run     # show plan, write nothing
   ABZAR_TOKEN=... python3 import_categories.py               # create missing categories
   ABZAR_TOKEN=... python3 import_categories.py --update      # also fix title/parent/order of existing ones
+  ABZAR_TOKEN=... python3 import_categories.py --src output/menu_categories.json   # from menu_categories.py
 
 Uses POST/PATCH /api/v1/backoffice/categories (needs categories.view + categories.manage).
 Existing categories are matched by slug, so re-running is safe. The token (env ABZAR_TOKEN) is never printed.
@@ -84,13 +85,14 @@ def main():
     ap.add_argument("--base", default=DEFAULT_BASE)
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--update", action="store_true", help="PATCH existing categories whose title/parent/order differ")
+    ap.add_argument("--src", type=Path, default=SRC, help=f"categories file (default {SRC})")
     args = ap.parse_args()
 
     token = read_token()
-    if not SRC.exists():
-        sys.exit(f"{SRC} not found — run: python3 categories.py")
+    if not args.src.exists():
+        sys.exit(f"{args.src} not found — run: python3 categories.py (or menu_categories.py)")
 
-    cats = json.loads(SRC.read_text(encoding="utf-8"))
+    cats = json.loads(args.src.read_text(encoding="utf-8"))
     cats.sort(key=lambda c: (c["depth"], c["sortOrder"]))  # parents first
 
     # sortOrder = position among siblings, as on the source site
