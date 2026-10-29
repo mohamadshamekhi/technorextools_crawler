@@ -29,6 +29,36 @@ def norm(title):
     return " ".join(title.replace("ي", "ی").replace("ك", "ک").replace("‌", " ").split())
 
 
+def ensure_attributes(api, category_id, specs, dry_run):
+    """Make sure the category's «ویژگی فنی و ظاهری» group holds an attribute per spec (add-only).
+
+    Returns (group status, {normalized title: attribute}, created labels, existing titles). In a dry run the
+    attributes that would be created are in the map with id None.
+    """
+    groups = api.call("GET", f"/categories/{category_id}/attribute-groups")
+    group = next((g for g in groups if norm(g["title"]) == norm(GROUP_TITLE)), None)
+    status = "existing" if group else "created"
+    if not group:
+        group = {"id": None, "attributes": []}
+        if not dry_run:
+            group = api.call("POST", f"/categories/{category_id}/attribute-groups", {"title": GROUP_TITLE})
+            time.sleep(DELAY)
+    attrs = {norm(a["title"]): a for a in group["attributes"]}
+    created, existing = [], []
+    for i, s in enumerate(specs):
+        if norm(s["title"]) in attrs:
+            existing.append(s["title"])
+            continue
+        body = {"title": s["title"], "unit": s["unit"], "inputType": s["inputType"], "options": [], "sortOrder": i}
+        attr = {"id": None, **body}
+        if not dry_run:
+            attr = api.call("POST", f"/attribute-groups/{group['id']}/attributes", body)
+            time.sleep(DELAY)
+        attrs[norm(s["title"])] = attr
+        created.append(s["title"] + (f" ({s['unit']})" if s["unit"] else ""))
+    return status, attrs, created, existing
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--base", default=DEFAULT_BASE)
@@ -55,28 +85,8 @@ def main():
             print(f"  -        {cat['title']} [{slug}]  no specs crawled", file=sys.stderr)
             continue
         try:
-            groups = api.call("GET", f"/categories/{cat['id']}/attribute-groups")
-            group = next((g for g in groups if norm(g["title"]) == norm(GROUP_TITLE)), None)
-            if group:
-                res["group"] = "existing"
-            else:
-                res["group"] = "created"
-                group = {"id": None, "attributes": []}
-                if not args.dry_run:
-                    group = api.call("POST", f"/categories/{cat['id']}/attribute-groups", {"title": GROUP_TITLE})
-                    time.sleep(DELAY)
-            have = {norm(a["title"]) for a in group["attributes"]}
-            for i, s in enumerate(entry["specs"]):
-                if norm(s["title"]) in have:
-                    res["existing"].append(s["title"])
-                    continue
-                body = {"title": s["title"], "unit": s["unit"], "inputType": s["inputType"], "options": [],
-                        "sortOrder": i}
-                if not args.dry_run:
-                    api.call("POST", f"/attribute-groups/{group['id']}/attributes", body)
-                    time.sleep(DELAY)
-                have.add(norm(s["title"]))
-                res["created"].append(s["title"] + (f" ({s['unit']})" if s["unit"] else ""))
+            res["group"], _, res["created"], res["existing"] = ensure_attributes(api, cat["id"], entry["specs"],
+                                                                               args.dry_run)
             counts["categories"] += 1
         except Exception as ex:
             res["error"] = str(ex)

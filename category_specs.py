@@ -58,7 +58,7 @@ def split_pair(line):
     for sep in (":", "："):
         if sep in line:
             key, value = (p.strip() for p in line.split(sep, 1))
-            if key and value and len(key) <= 40:
+            if key and value and len(key) <= 40 and len(value) <= 80:  # longer = a prose sentence
                 return key, value
             return None
     m = NO_COLON.match(line)

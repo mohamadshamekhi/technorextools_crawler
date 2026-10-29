@@ -46,6 +46,24 @@ ABZAR_TOKEN=... python3 import_category_attributes.py
 - `import_category_attributes.py` gives each of our categories (by slug) an attribute group «ویژگی فنی و ظاهری»
   and adds the missing attributes. It never edits or deletes, so re-running is safe.
 
+## Products
+
+```bash
+python3 products.py --limit 3                              # test: first 3 products -> output/products.json
+python3 products.py --product saw-perpendicular-at-6112    # test: one product (slug or full URL)
+python3 products.py                                        # everything
+ABZAR_TOKEN=... python3 import_products.py --dry-run
+ABZAR_TOKEN=... python3 import_products.py                 # --update also refreshes existing ones
+```
+
+- Category = the most specific of the product's categories that exists on the API; brand = the first of its
+  brands/tags that is one of our brands. Import categories and brands first.
+- One variant per product: the source SKU (a slug-based `PA-…` one if missing/non-latin/taken), stock = the
+  source quantity if shown, else `--default-stock` (10) when in stock, else 0; weight from «وزن …» specs.
+- No price on the source («تماس بگیرید») → created with price 0 and **inactive**.
+- Specs go into the category's «ویژگی فنی و ظاهری» attributes (missing ones are added), then the product's values.
+- Images → product gallery, first one main. Re-running only fills what an existing product is missing.
+
 ## Other scripts
 
 - `categories.py` → `output/categories.json`: the full WooCommerce category tree (not just the menu).
