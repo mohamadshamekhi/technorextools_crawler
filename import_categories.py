@@ -30,6 +30,21 @@ class Api:
         self.token = token
         self.perms = perms
 
+    def refresh_token(self):
+        """When run from panel.py, fetch a freshly refreshed token from it (the access token lives 15 min)."""
+        url, key = os.environ.get("ABZAR_TOKEN_URL"), os.environ.get("ABZAR_PANEL_KEY")
+        if not url or not key:
+            return False
+        req = urllib.request.Request(url, data=b"{}", method="POST", headers={
+            "X-Panel-Key": key, "Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                self.token = json.loads(r.read())["token"]
+        except (urllib.error.URLError, OSError, ValueError, KeyError):
+            return False
+        print("    token refreshed", file=sys.stderr)
+        return True
+
     def call(self, method, path, body=None, raw=None, content_type=None):
         data = raw if raw is not None else json.dumps(body, ensure_ascii=False).encode() if body is not None else None
         headers = {"Authorization": f"Bearer {self.token}", "Accept": "application/json"}
@@ -44,6 +59,9 @@ class Api:
             except urllib.error.HTTPError as e:
                 detail = e.read().decode("utf-8", "replace")
                 if e.code == 401:
+                    if self.refresh_token():
+                        headers["Authorization"] = f"Bearer {self.token}"
+                        continue
                     sys.exit("401: token expired or invalid — get a fresh one and re-run (already-imported rows are skipped)")
                 if e.code == 403:
                     sys.exit(f"403: this user lacks {self.perms}")

@@ -47,6 +47,12 @@ def find_product(api, slug):
     return api.call("GET", f"/products/{hit['id']}") if hit else None
 
 
+def brand_in_title(title, brands):
+    """«پرچ بادی هیدرولیک MTT مدل AT-6015» has no brand tag: find our brand's slug or name as a word in the title."""
+    words = set(re.findall(r"[\w\u0600-\u06FF]+", title.lower()))
+    return next((b for b in brands.values() if b["slug"].lower() in words or b["title"].lower() in words), None)
+
+
 def pick_category(row, cats):
     """The deepest of the product's categories that exists on our side."""
     def depth(c):
@@ -131,7 +137,8 @@ def main():
             if not cat:
                 raise RuntimeError(f"none of its categories {row['categories']} is on the API — import categories first")
             res["category"] = cat["slug"]
-            brand = next((brands[s] for s in row["brands"] + row["tags"] if s in brands), None)
+            brand = next((brands[s] for s in row["brands"] + row["tags"] if s in brands), None) or brand_in_title(
+                row["title"], brands)
             res["brand"] = brand["slug"] if brand else None
 
             fields = {

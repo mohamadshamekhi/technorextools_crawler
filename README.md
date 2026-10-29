@@ -12,7 +12,8 @@ python3 panel.py        # opens http://127.0.0.1:8765
 
 Every step below, grouped by feature and in order, with a run button and live output. Log in once with the
 admin mobile (OTP) inside the panel; the token stays in the panel process, is refreshed before each step and
-passed to the scripts — no `ABZAR_TOKEN=...` copying. Pick the target server (production / localhost:4000) at
+passed to the scripts — no `ABZAR_TOKEN=...` copying. A script that hits a 401 mid-run (long imports outlive the
+15-minute token) asks the panel for a fresh token and carries on. Pick the target server (production / localhost:4000) at
 the top. Steps are registered in `panel_steps.py`; a new script gets an entry there in the same change.
 
 ## Categories from the homepage mega menu (wipe and re-import)

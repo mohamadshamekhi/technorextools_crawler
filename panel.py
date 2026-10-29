@@ -72,12 +72,12 @@ class Session:
         if data.get("user"):
             self.user = {k: data["user"].get(k) for k in ("fullName", "mobile", "role")}
 
-    def token(self):
-        """A valid access token, refreshed if it expires within a minute; None when logged out."""
+    def token(self, force=False):
+        """A valid access token, refreshed if it expires within a minute (or `force`); None when logged out."""
         with self.lock:
             if not self.access:
                 return None
-            if jwt_exp(self.access) - time.time() > 60:
+            if not force and jwt_exp(self.access) - time.time() > 60:
                 return self.access
             status, data = self.api("/auth/refresh", {"refreshToken": self.refresh})
             if status == 200 and data.get("accessToken"):
@@ -158,7 +158,7 @@ class Handler(BaseHTTPRequestHandler):
         route = {
             "/api/state": self.state, "/api/base": self.set_base, "/api/otp/request": self.otp_request,
             "/api/otp/verify": self.otp_verify, "/api/logout": self.logout, "/api/run": self.run,
-            "/api/stop": self.stop,
+            "/api/stop": self.stop, "/api/token": self.fresh_token,
         }.get(self.path)
         if not route:
             return self.send_error(404)
@@ -209,6 +209,13 @@ class Handler(BaseHTTPRequestHandler):
             SESSION.clear()
         self.send_json(200, {"session": SESSION.view()})
 
+    def fresh_token(self, _):
+        """For the running script (it got a 401 mid-run): a newly refreshed access token."""
+        token = SESSION.token(force=True)
+        if not token:
+            return self.send_json(401, {"message": "نشست منقضی شده؛ دوباره وارد شوید"})
+        self.send_json(200, {"token": token})
+
     def stop(self, _):
         proc = RUN["proc"]
         if proc and proc.poll() is None:
@@ -220,12 +227,16 @@ class Handler(BaseHTTPRequestHandler):
         if not step:
             return self.send_json(404, {"message": "مرحله‌ی ناشناخته"})
         env = {**os.environ, "PYTHONUNBUFFERED": "1", "PYTHONIOENCODING": "utf-8"}
-        env.pop("ABZAR_TOKEN", None)
+        for k in ("ABZAR_TOKEN", "ABZAR_TOKEN_URL", "ABZAR_PANEL_KEY"):
+            env.pop(k, None)
         if step.get("token"):
             token = SESSION.token()
             if not token:
                 return self.send_json(401, {"message": "اول وارد شوید (یا نشست منقضی شده)"})
             env["ABZAR_TOKEN"] = token
+            # long runs outlive the 15-minute token: the script asks the panel for a fresh one on a 401
+            env["ABZAR_TOKEN_URL"] = f"http://127.0.0.1:{self.server.server_address[1]}/api/token"
+            env["ABZAR_PANEL_KEY"] = KEY
         if not RUN_LOCK.acquire(blocking=False):
             title = STEPS.get(RUN["id"] or "", {}).get("title", "دیگری")
             return self.send_json(409, {"message": f"مرحله‌ی «{title}» در حال اجراست"})

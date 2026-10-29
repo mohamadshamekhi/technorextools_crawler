@@ -27,7 +27,16 @@ OUT = Path("output/category_specs.json")
 PRODUCTS = f"{SITE}/wp-json/wc/store/v1/products"
 
 # Keys that map to a dedicated product field on our side, not to an attribute.
-SKIP_KEYS = {"برند", "نام برند", "برند محصول"}
+SKIP_KEYS = {"برند", "نام برند", "برند محصول", "نام کالا", "نام محصول", "کد", "کد کالا", "کد محصول", "مشخصات",
+             "مشخصات فنی", "قیمت"}
+# Different wordings of one spec across products → one attribute per category.
+ALIASES = {
+    "مدل دستگاه": "مدل", "مدل محصول": "مدل", "شماره مدل": "مدل",
+    "وزن": "وزن دستگاه", "وزن محصول": "وزن دستگاه", "طول": "طول دستگاه", "طول محصول": "طول دستگاه",
+    "کشور تولید کننده": "کشور سازنده", "کشور سازنده محصول": "کشور سازنده", "ساخت": "کشور سازنده",
+    "ساحت": "کشور سازنده", "مصرف باد": "میزان مصرف باد", "هوای مصرفی": "میزان مصرف باد",
+    "مدت گارانتی": "گارانتی",
+}
 # Values that make a yes/no attribute.
 BOOL_VALUES = {"دارد", "ندارد", "بله", "خیر", "دارای", "فاقد"}
 
@@ -86,6 +95,7 @@ def parse_specs(html):
             skipped.append(line)
             continue
         key, value = pair
+        key = ALIASES.get(key, key)
         if key in SKIP_KEYS or key in seen:
             skipped.append(line)
             continue
