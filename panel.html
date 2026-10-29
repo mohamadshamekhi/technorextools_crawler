@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crawler Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f5f2; --surface: #ffffff; --fg: #1d1d1b; --muted: #6b6a66; --border: #e3e1db;
+    --primary: #1f5eff; --primary-fg: #ffffff; --code-bg: #15171c; --code-fg: #e8eaf0;
+    --ok: #13804b; --ok-bg: #e6f4ec; --danger: #c0262d; --danger-bg: #fdecec; --warn-bg: #fff6e0; --warn: #8a5a00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111214; --surface: #1a1c20; --fg: #ececea; --muted: #9a9a96; --border: #2c2f35;
+      --primary: #6b93ff; --primary-fg: #0b0d12; --code-bg: #0b0c0f; --code-fg: #e8eaf0;
+      --ok: #4cc38a; --ok-bg: #14281e; --danger: #ff6b70; --danger-bg: #2d1416; --warn-bg: #2b2310; --warn: #f0c060;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #111214; --surface: #1a1c20; --fg: #ececea; --muted: #9a9a96; --border: #2c2f35;
+    --primary: #6b93ff; --primary-fg: #0b0d12; --code-bg: #0b0c0f; --code-fg: #e8eaf0;
+    --ok: #4cc38a; --ok-bg: #14281e; --danger: #ff6b70; --danger-bg: #2d1416; --warn-bg: #2b2310; --warn: #f0c060;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.9 Vazirmatn, Tahoma, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 28px 16px 120px; }
+  h1 { font-size: 24px; font-weight: 800; margin: 0; }
+  .top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 14px; }
+  label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  input, select { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg); color: var(--fg); font: 14px "JetBrains Mono", Vazirmatn, monospace; }
+  input:focus, select:focus, button:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+  button { font: 600 14px Vazirmatn, Tahoma, sans-serif; cursor: pointer; border-radius: 10px; border: none; padding: 8px 16px; background: var(--primary); color: var(--primary-fg); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .ghost { background: transparent; border: 1px solid var(--border); color: var(--fg); }
+  .danger-btn { background: var(--danger); color: #fff; }
+  .row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 180px; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .msg { font-size: 13px; margin-top: 8px; min-height: 1em; }
+  .msg.err { color: var(--danger); }
+  .msg.ok { color: var(--ok); }
+  .session { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; padding: 3px 12px; border-radius: 99px; background: var(--ok-bg); color: var(--ok); }
+  .pill.off { background: var(--warn-bg); color: var(--warn); }
+  .group-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 4px; }
+  .group-head h2 { margin: 0; font-size: 18px; }
+  .group-head p { margin: 2px 0 0; }
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 0 12px; padding: 14px 0; border-bottom: 1px dashed var(--border); }
+  .step:last-child { border-bottom: none; padding-bottom: 0; }
+  .step.optional { opacity: .85; }
+  .num { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: var(--bg); border: 1px solid var(--border); }
+  .step[data-status="ok"] .num { background: var(--ok); border-color: var(--ok); color: var(--primary-fg); }
+  .step[data-status="fail"] .num { background: var(--danger); border-color: var(--danger); color: #fff; }
+  .step[data-status="running"] .num { border: 2px solid var(--primary); color: var(--primary); animation: pulse 1s infinite alternate; }
+  @keyframes pulse { to { box-shadow: 0 0 0 6px transparent; background: var(--surface); } from { box-shadow: 0 0 0 0 var(--primary); } }
+  .step-title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .step-title h3 { margin: 0; font-size: 16px; }
+  .tag { font-size: 12px; padding: 1px 10px; border-radius: 99px; background: var(--bg); color: var(--muted); border: 1px solid var(--border); white-space: nowrap; }
+  .tag.local { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+  .tag.danger { background: var(--danger-bg); color: var(--danger); border-color: transparent; }
+  .desc { color: var(--muted); font-size: 14px; margin: 4px 0 8px; }
+  .actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  code.cmd { font: 12.5px "JetBrains Mono", monospace; direction: ltr; unicode-bidi: isolate; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 3px 8px; overflow-x: auto; max-width: 100%; white-space: nowrap; }
+  .last { font-size: 12px; color: var(--muted); }
+  pre.out { grid-column: 2; margin: 10px 0 0; background: var(--code-bg); color: var(--code-fg); border-radius: 10px; padding: 12px 14px; max-height: 340px; overflow: auto; font: 12.5px/1.7 "JetBrains Mono", monospace; direction: ltr; text-align: left; white-space: pre-wrap; word-break: break-word; }
+  pre.out .sys { color: #8fa3ff; }
+  pre.out .bad { color: #ff8a8f; }
+  pre.out .good { color: #6fdca4; }
+  .body { min-width: 0; }
+  .bar { position: fixed; inset-inline: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 12px 16px; display: none; }
+  .bar.show { display: block; }
+  .bar-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  @media (max-width: 560px) { .step { grid-template-columns: 1fr; } .num { margin-bottom: 6px; } pre.out { grid-column: 1; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <h1>پنل کراولر</h1>
+    <div style="min-width:260px">
+      <label for="base">سرور مقصد</label>
+      <select id="base"></select>
+    </div>
+  </div>
+
+  <section class="card" id="login-card">
+    <div class="session" id="session"></div>
+    <div id="login-form">
+      <p class="muted" style="margin:6px 0 10px">برای مرحله‌هایی که روی سرور می‌نویسند باید با موبایل ادمین وارد شوید. توکن پیش از هر مرحله خودکار تمدید می‌شود.</p>
+      <div class="row">
+        <div><label for="mobile">موبایل ادمین</label><input id="mobile" dir="ltr" inputmode="numeric" placeholder="09xxxxxxxxx" autocomplete="tel"></div>
+        <button id="send-code" type="button">ارسال کد</button>
+        <div><label for="code">کد پیامک</label><input id="code" dir="ltr" inputmode="numeric" maxlength="5" placeholder="12345" autocomplete="one-time-code"></div>
+        <button id="verify" type="button">ورود</button>
+      </div>
+      <div class="msg" id="login-msg" role="status"></div>
+    </div>
+  </section>
+
+  <div id="groups"></div>
+</main>
+
+<div class="bar" id="bar" role="status">
+  <div class="bar-inner">
+    <span id="bar-text"></span>
+    <button class="danger-btn" id="stop" type="button">توقف</button>
+  </div>
+</div>
+
+<script>
+  const KEY = "__PANEL_KEY__";
+  const $ = (id) => document.getElementById(id);
+  const toFa = (n) => String(n).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
+  const store = {
+    get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  };
+
+  let state = { session: { loggedIn: false }, groups: [] };
+  let running = null; // شناسه‌ی مرحله‌ی در حال اجرا
+  let streaming = false; // آیا همین صفحه خروجی مرحله را می‌خواند
+  const outputs = {}; // خروجی آخرین اجرای هر مرحله در همین صفحه
+
+  async function api(path, body = {}) {
+    const res = await fetch(path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Panel-Key": KEY },
+      body: JSON.stringify(body),
+    });
+    let data = {};
+    try { data = await res.json(); } catch {}
+    if (!res.ok) throw new Error(data.message || `خطا ${res.status}`);
+    return data;
+  }
+
+  function el(tag, attrs = {}, ...children) {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === "class") n.className = v;
+      else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+      else if (v !== false && v != null) n.setAttribute(k, v === true ? "" : v);
+    }
+    for (const c of children.flat()) if (c != null) n.append(c);
+    return n;
+  }
+
+  function setMsg(text, kind) {
+    const m = $("login-msg");
+    m.textContent = text || "";
+    m.className = `msg ${kind || ""}`;
+  }
+
+  function renderSession() {
+    const s = state.session;
+    const box = $("session");
+    box.innerHTML = "";
+    $("base").innerHTML = "";
+    (s.bases || []).forEach((b) => $("base").append(el("option", { value: b, selected: b === s.base }, b.replace(/^https?:\/\//, ""))));
+    $("base").disabled = !!running;
+    if (s.loggedIn) {
+      const who = [s.user?.fullName, s.user?.mobile].filter(Boolean).join(" · ");
+      box.append(
+        el("span", { class: "pill" }, "✔ وارد شده"),
+        el("span", {}, who || ""),
+        el("span", { class: "tag" }, s.user?.role || ""),
+        el("button", { class: "ghost", type: "button", disabled: !!running, onclick: logout }, "خروج"),
+      );
+      $("login-form").hidden = true;
+    } else {
+      box.append(el("span", { class: "pill off" }, "وارد نشده‌اید"));
+      $("login-form").hidden = false;
+    }
+  }
+
+  function lastLabel(r) {
+    if (!r) return "";
+    const t = new Date(r.at).toLocaleString("fa-IR", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" });
+    return `${r.code === 0 ? "آخرین اجرا موفق" : `آخرین اجرا ناموفق (کد ${toFa(r.code)})`} — ${t}`;
+  }
+
+  function renderGroups() {
+    const root = $("groups");
+    root.innerHTML = "";
+    const loggedIn = state.session.loggedIn;
+    for (const g of state.groups) {
+      const card = el("section", { class: "card" },
+        el("div", { class: "group-head" },
+          el("div", {}, el("h2", {}, g.title), el("p", { class: "muted" }, g.desc)),
+          el("button", { type: "button", disabled: !!running, onclick: () => runAll(g) }, "اجرای همه به ترتیب ▶"),
+        ),
+      );
+      g.steps.forEach((s, i) => {
+        const last = store.get(`last:${s.id}`);
+        const status = running === s.id ? "running" : last ? (last.code === 0 ? "ok" : "fail") : "";
+        const blocked = s.token && !loggedIn;
+        const tags = [
+          s.token ? el("span", { class: "tag" }, "روی سرور") : el("span", { class: "tag local" }, "روی سیستم شما"),
+          s.danger ? el("span", { class: "tag danger" }, "غیرقابل برگشت") : null,
+          s.optional ? el("span", { class: "tag" }, "اختیاری") : null,
+        ];
+        const out = el("pre", { class: "out", hidden: !outputs[s.id], id: `out-${s.id}` });
+        if (outputs[s.id]) out.append(...outputs[s.id].map(lineNode));
+        card.append(el("div", { class: `step${s.optional ? " optional" : ""}`, "data-status": status },
+          el("span", { class: "num", "aria-hidden": "true" }, toFa(i + 1)),
+          el("div", { class: "body" },
+            el("div", { class: "step-title" }, el("h3", {}, s.title), tags),
+            el("p", { class: "desc" }, s.desc),
+            el("div", { class: "actions" },
+              el("button", {
+                type: "button", class: s.danger ? "danger-btn" : "",
+                disabled: !!running || blocked,
+                title: blocked ? "اول وارد شوید" : null,
+                onclick: () => runOne(s),
+              }, running === s.id ? "در حال اجرا…" : blocked ? "اول وارد شوید" : "اجرا"),
+              el("code", { class: "cmd" }, s.cmd),
+              el("span", { class: "last" }, lastLabel(last)),
+            ),
+          ),
+          out,
+        ));
+      });
+      root.append(card);
+    }
+  }
+
+  function render() { renderSession(); renderGroups(); }
+
+  function lineNode({ cls, text }) { return el("span", { class: cls || "" }, text + "\n"); }
+
+  function push(id, text, cls) {
+    (outputs[id] ||= []).push({ text, cls });
+    const pre = $(`out-${id}`);
+    if (!pre) return;
+    pre.hidden = false;
+    const atBottom = pre.scrollHeight - pre.scrollTop - pre.clientHeight < 40;
+    pre.append(lineNode({ text, cls }));
+    if (atBottom) pre.scrollTop = pre.scrollHeight;
+  }
+
+  // یک مرحله را اجرا می‌کند و کد خروج را برمی‌گرداند (-1 = اجرا نشد)
+  async function runStep(s) {
+    outputs[s.id] = [];
+    running = s.id;
+    streaming = true;
+    $("bar-text").textContent = `در حال اجرا: ${s.title}`;
+    $("bar").classList.add("show");
+    render();
+    let code = -1;
+    try {
+      const res = await fetch("/api/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Panel-Key": KEY },
+        body: JSON.stringify({ id: s.id }),
+      });
+      if (!res.ok) {
+        let m = `خطا ${res.status}`;
+        try { m = (await res.json()).message || m; } catch {}
+        push(s.id, m, "bad");
+        if (res.status === 401) await refreshState();
+        return -1;
+      }
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let buf = "";
+      for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        let nl;
+        while ((nl = buf.indexOf("\n")) >= 0) {
+          const line = buf.slice(0, nl);
+          buf = buf.slice(nl + 1);
+          if (!line) continue;
+          const ev = JSON.parse(line);
+          if (ev.t === "start") push(s.id, `$ ${ev.cmd}`, "sys");
+          else if (ev.t === "out") push(s.id, ev.line);
+          else if (ev.t === "exit") {
+            code = ev.code;
+            push(s.id, code === 0 ? "✔ تمام شد" : `✘ با خطا تمام شد (کد ${code})`, code === 0 ? "good" : "bad");
+          }
+        }
+      }
+      if (code !== -1) store.set(`last:${s.id}`, { code, at: Date.now() });
+      else push(s.id, "✘ ارتباط با پنل قطع شد", "bad");
+    } catch (e) {
+      push(s.id, `✘ ${e.message}`, "bad");
+    } finally {
+      running = null;
+      streaming = false;
+      $("bar").classList.remove("show");
+      await refreshState();
+    }
+    return code;
+  }
+
+  async function runOne(s) {
+    if (s.danger && !confirm(`«${s.title}» روی سرور ${state.session.base} اجرا شود؟ این کار برگشت‌پذیر نیست.`)) return;
+    await runStep(s);
+  }
+
+  async function runAll(g) {
+    const list = g.steps.filter((s) => !s.optional);
+    if (list.some((s) => s.token) && !state.session.loggedIn) { alert("اول وارد شوید."); return; }
+    const danger = list.filter((s) => s.danger).map((s) => `«${s.title}»`);
+    const msg = `این مراحل به ترتیب روی ${state.session.base} اجرا می‌شوند:\n\n${list.map((s, i) => `${toFa(i + 1)}. ${s.title}`).join("\n")}`
+      + (danger.length ? `\n\nهشدار: ${danger.join("، ")} غیرقابل برگشت است.` : "");
+    if (!confirm(msg)) return;
+    for (const s of list) {
+      const code = await runStep(s);
+      if (code !== 0) { alert(`«${s.title}» ناموفق بود؛ اجرای بقیه متوقف شد. خروجی را زیر همان مرحله ببینید.`); return; }
+    }
+  }
+
+  async function refreshState() {
+    try {
+      const data = await api("/api/state");
+      state = data;
+      if (!streaming) running = data.running;
+    } catch (e) { setMsg(e.message, "err"); }
+    render();
+  }
+
+  let cooldown = 0;
+  function tickCooldown() {
+    const b = $("send-code");
+    if (cooldown > 0) { b.disabled = true; b.textContent = `ارسال دوباره (${toFa(cooldown)})`; cooldown--; setTimeout(tickCooldown, 1000); }
+    else { b.disabled = false; b.textContent = "ارسال کد"; }
+  }
+
+  $("send-code").addEventListener("click", async () => {
+    const mobile = $("mobile").value.trim();
+    if (!/^09\d{9}$/.test(mobile)) return setMsg("موبایل را به شکل 09xxxxxxxxx وارد کنید.", "err");
+    store.set("mobile", mobile);
+    setMsg("در حال ارسال…");
+    try {
+      const r = await api("/api/otp/request", { mobile });
+      setMsg(r.devCode ? `کد ارسال شد (حالت توسعه: ${r.devCode})` : "کد پیامک شد.", "ok");
+      if (r.devCode) $("code").value = r.devCode;
+      cooldown = r.resendAfter || 60;
+      tickCooldown();
+      $("code").focus();
+    } catch (e) { setMsg(e.message, "err"); }
+  });
+
+  async function verify() {
+    const mobile = $("mobile").value.trim();
+    const code = $("code").value.trim();
+    if (!/^\d{5}$/.test(code)) return setMsg("کد ۵ رقمی را وارد کنید.", "err");
+    setMsg("در حال ورود…");
+    try {
+      await api("/api/otp/verify", { mobile, code });
+      $("code").value = "";
+      setMsg("");
+      await refreshState();
+    } catch (e) { setMsg(e.message, "err"); }
+  }
+  $("verify").addEventListener("click", verify);
+  $("code").addEventListener("keydown", (e) => { if (e.key === "Enter") verify(); });
+
+  async function logout() {
+    try { await api("/api/logout"); } catch {}
+    await refreshState();
+  }
+
+  $("base").addEventListener("change", async (e) => {
+    try {
+      const data = await api("/api/base", { base: e.target.value });
+      state = data;
+      setMsg("سرور عوض شد؛ دوباره وارد شوید.", "ok");
+    } catch (err) { setMsg(err.message, "err"); }
+    render();
+  });
+
+  $("stop").addEventListener("click", () => api("/api/stop").catch(() => {}));
+
+  $("mobile").value = store.get("mobile") || "";
+  refreshState();
+</script>
+</body>
+</html>
