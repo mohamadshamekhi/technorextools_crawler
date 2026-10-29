@@ -378,7 +378,20 @@
   $("stop").addEventListener("click", () => api("/api/stop").catch(() => {}));
 
   $("mobile").value = store.get("mobile") || "";
-  refreshState();
+  // اگر صفحه مستقیم (نه از طریق panel.py) باز شده باشد، کلید جایگزین نشده و هیچ دکمه‌ای کار نمی‌کند
+  if (KEY.startsWith("__")) {
+    document.querySelector("main").replaceChildren(
+      el("section", { class: "card" },
+        el("h1", {}, "پنل باید با panel.py باز شود"),
+        el("p", {}, "این فایل را مستقیم باز کرده‌اید. در ترمینال، داخل پوشه‌ی crowler این را بزنید تا پنل خودش در مرورگر باز شود:"),
+        el("code", { class: "cmd" }, "python3 panel.py"),
+        el("p", { class: "muted" }, "اگر پنل از قبل در حال اجراست: "),
+        el("a", { href: "http://127.0.0.1:8765/", dir: "ltr" }, "http://127.0.0.1:8765/"),
+      ),
+    );
+  } else {
+    refreshState();
+  }
 </script>
 </body>
 </html>
