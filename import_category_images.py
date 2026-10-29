@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Give every imported category an image on the Technorex API.
 
-pumaair.ir has almost no category images (only one), so by default a category without one
-gets the main image of its most popular product on pumaair.ir. Use --only-real to skip those.
+Image per category, best first: its menu icon (output/category_icons/, from menu_categories.py),
+its own image on pumaair.ir, then — pumaair.ir has almost none — the main image of its most popular
+product there. Use --only-real to skip that last fallback.
 
   ABZAR_TOKEN=... python3 import_category_images.py --dry-run
   ABZAR_TOKEN=... python3 import_category_images.py
   ABZAR_TOKEN=... python3 import_category_images.py --replace     # also overwrite existing images
+  ABZAR_TOKEN=... python3 import_category_images.py --src output/menu_categories.json
 
 Per category: download image from pumaair.ir -> POST /backoffice/media/upload
 (ownerType=CATEGORY, purpose=COVER) -> PATCH /backoffice/categories/:id { imageUrl }.
@@ -37,10 +39,12 @@ def http_get(url):
 
 
 def source_images(cat, only_real):
-    """Candidate (url, origin) pairs, best first: the category's own image, then its top product's."""
+    """Candidate (url or local file, origin) pairs, best first: menu icon, own image, top product's image."""
+    if cat.get("icon"):
+        yield Path("output") / cat["icon"], "menu icon"
     if cat.get("imageUrl"):
         yield cat["imageUrl"], "category"
-    if only_real:
+    if only_real or not cat.get("sourceId"):
         return
     raw, _ = http_get(f"{STORE}?category={cat['sourceId']}&per_page=1&orderby=popularity&order=desc")
     items = json.loads(raw)
@@ -53,6 +57,8 @@ def download(cat, only_real):
     err = None
     for src, origin in source_images(cat, only_real):
         try:
+            if isinstance(src, Path):
+                return src.name, origin, src.read_bytes(), mimetypes.guess_type(src.name)[0] or "image/png"
             content, ctype = http_get(src)
             if ctype.startswith("image/"):
                 return src, origin, content, ctype
@@ -81,10 +87,11 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--replace", action="store_true", help="overwrite categories that already have an image")
     ap.add_argument("--only-real", action="store_true", help="only use real category images (no product fallback)")
+    ap.add_argument("--src", type=Path, default=SRC, help=f"categories file (default {SRC})")
     args = ap.parse_args()
 
     api = Api(args.base, read_token())
-    cats = json.loads(SRC.read_text(encoding="utf-8"))
+    cats = json.loads(args.src.read_text(encoding="utf-8"))
     existing = existing_by_slug(api)
 
     results, counts = [], {"uploaded": 0, "skipped": 0, "missing": 0, "failed": 0}
