@@ -155,6 +155,9 @@ def main():
     ap.add_argument("--save-html", action="store_true", help="keep the downloaded homepage as output/home.html")
     args = ap.parse_args()
 
+    if args.html and not args.html.is_file():
+        sys.exit(f"{args.html} not found — save https://pumaair.ir/ from a browser (Save Page As… → "
+                 f"\"Webpage, HTML Only\") into this folder and pass that file's name")
     html = args.html.read_text(encoding="utf-8") if args.html else http_get(SITE + "/").decode("utf-8", "replace")
     OUT_DIR.mkdir(exist_ok=True)
     if args.save_html:
